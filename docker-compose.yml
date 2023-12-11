@@ -1,0 +1,25 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: ${MYSQL_USER}
+      POSTGRES_PASSWORD: ${MYSQL_PASSWORD}
+      POSTGRES_DB: ${MYSQL_DATABASE}
+  web:
+    build: .
+    ports:
+      - "8000:5000"
+    environment:
+      - APP_NAME=myapp
+      - DB_HOST=db
+      - DB_USER=${MYSQL_USER}
+      - DB_PASS=${MYSQL_PASSWORD}
+      - DB_NAME=${MYSQL_DATABASE}
+    depends_on:
+      - db
+    command: ["./wait-for-it.sh", "db:5432", "--", "python", "application.py", 'flask db migrate']
+  adminer:
+    image: adminer
+    ports:
+      - "8888:8080"

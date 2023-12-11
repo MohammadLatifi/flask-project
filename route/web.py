@@ -1,7 +1,9 @@
-from flask import Blueprint
+import os
+from flask import Blueprint, render_template
 from core.route.route_helper import route_function_wrapper
 from app.controllers.HomeController import HomeController
-web_blueprint = Blueprint('web', __name__)
+from app.models.TechTalent import TechTalent
+web_blueprint = Blueprint('web', os.getenv("APP_NAME"),template_folder='./resources/view',static_folder='./public')
 
 ###---------------------------------
 ### Web routes defenitions goes here
@@ -9,9 +11,18 @@ web_blueprint = Blueprint('web', __name__)
 ###---------------------------------
 
 @web_blueprint.route('/')
-def home():
-    return route_function_wrapper(HomeController(),'home')()
+def index():
+    return route_function_wrapper(HomeController(),'index')()
 
 @web_blueprint.route('/about')
 def about():
     return route_function_wrapper(HomeController(),'about')()
+
+@web_blueprint.route('/add_talent',methods=['POST'])
+def add_talent():
+    return route_function_wrapper(HomeController(),'add_talent')()
+
+
+@web_blueprint.route('/profile')
+def profile():
+    return render_template('frontend/profile.html')

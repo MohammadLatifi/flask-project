@@ -1,7 +1,9 @@
 from flask import Blueprint
 from core.route.route_helper import route_function_wrapper
-api_blueprint = Blueprint('api', __name__)
+import os
 
+
+api_blueprint = Blueprint('api', os.getenv("APP_NAME"))
 ###---------------------
 ### API routes defenitions goes here
 ###

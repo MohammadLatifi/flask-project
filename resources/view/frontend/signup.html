@@ -1,0 +1,28 @@
+{% extends "layout/master.html" %}
+
+{% block content %}
+
+<div class="bg-body-secondary container-sm mt-4 p-4 rounded w-25">
+    <h3 class="title">Sign Up</h3>
+    <div class="mt-4">
+        <form method="POST" class="" action="/signup">
+            <div class="form-group mb-3 row">
+                <label class='col' for="email">email:</label>
+                <input class="col input is-large" type="email" name="email" placeholder="Email" autofocus="">
+            </div>
+
+            <div class="form-group mb-3 row">
+                <label class='col' for="name">name:</label>
+                <input class="col input is-large" type="text" name="name" placeholder="Name" autofocus="">
+            </div>
+
+            <div class="form-group mb-3 row">
+                <label class='col' for="password">password:</label>
+                <input class="col input is-large" type="password" name="password" placeholder="Password">
+            </div>
+
+            <button class="btn btn-primary">Sign Up</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,14 +1,9 @@
 import os
-from flask import Flask,Blueprint,request,url_for,render_template, redirect
-from flask_sqlalchemy import SQLAlchemy
-from dotenv import load_dotenv
-from sqlalchemy import Column, Integer
-from core.route.route_helper import route_function_wrapper
-from route.web import web_blueprint 
-from route.api import api_blueprint
-from route.auth import auth
-from app.models.User import  User 
+import flask as fk
+import route as route
 
+from dotenv import load_dotenv
+from app.models.User import  User 
 from extensions import (
     bcrypt,
     db,
@@ -29,9 +24,9 @@ def register_blueprints(app):
     ###---------------------------------
     ### Register Flask blueprints.
     ###---------------------------------
-    app.register_blueprint(web_blueprint)
-    app.register_blueprint(api_blueprint)
-    app.register_blueprint(auth)
+    app.register_blueprint(route.web_blueprint)
+    app.register_blueprint(route.api_blueprint)
+    app.register_blueprint(route.auth_blueprint)
     return None
 
 def create_app():
@@ -39,7 +34,7 @@ def create_app():
     ###-----------------------------------------------------------------------------------------------------------
     ### make the app, set name from .env file | change the template and staic folder path to our current structure
     ###-----------------------------------------------------------------------------------------------------------
-    app = Flask(os.getenv("APP_NAME"),template_folder='./resources/view',static_folder='./public')
+    app = fk.Flask(os.getenv("APP_NAME"),template_folder='./resources/view',static_folder='./public')
 
     ###-----------------------------------------------------------------------------------------------------------------------
     ### set the MySQl configs , make the abstract class of BaseModel with one engin therefore other models can inherit form it 
@@ -50,6 +45,8 @@ def create_app():
     mysql_db = os.getenv('DB_NAME')
 
     app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{mysql_user}:{mysql_password}@{mysql_host}:5432/{mysql_db}'
+    app.secret_key = os.getenv('FLASK_SECRET_KEY')
+    app.config['SESSION_TYPE'] = 'filesystem'
     ###---------------------------------
     ### bind app to extensions and blueprints
     ###---------------------------------
@@ -59,7 +56,7 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(user_id):
-        return User.query.get(int(user_id))
+        return db.session.get(User,int(user_id))
 
     return app
 

@@ -1,12 +1,11 @@
-from app.models.BaseModel import *
-from sqlalchemy import Column, Integer, String
+from extensions import db
 from flask_login import UserMixin
 
-class User (UserMixin,BaseModel):
+class User (UserMixin,db.Model):
     __tablename__ = 'users'
     # user-specific fields here
-    id = Column(Integer, primary_key=True)
-    email = Column(String(255), unique=True)
-    password = Column(String(255))
-    name = Column(String(255))
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(255), unique=True)
+    password = db.Column(db.String(255))
+    name = db.Column(db.String(255))
 

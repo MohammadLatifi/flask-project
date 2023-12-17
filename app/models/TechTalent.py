@@ -1,6 +1,6 @@
-from app.models.BaseModel import *
+from extensions import db
 
-class TechTalent(BaseModel):
+class TechTalent(db.Model):
     __tablename__ = 'tech_talent'
     id = db.Column(db.Integer, primary_key=True,autoincrement=True)
     name = db.Column(db.String(200), nullable=False)

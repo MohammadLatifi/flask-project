@@ -1,9 +1,10 @@
 import os
-from flask import Blueprint, render_template
+import flask as fk
+from flask_login import login_required, current_user
 from core.route.route_helper import route_function_wrapper
 from app.controllers.HomeController import HomeController
 from app.models.TechTalent import TechTalent
-web_blueprint = Blueprint('web', os.getenv("APP_NAME"),template_folder='./resources/view',static_folder='./public')
+web_blueprint = fk.Blueprint('web', os.getenv("APP_NAME"),template_folder='./resources/view',static_folder='./public')
 
 ###---------------------------------
 ### Web routes defenitions goes here
@@ -24,5 +25,6 @@ def add_talent():
 
 
 @web_blueprint.route('/profile')
+@login_required
 def profile():
-    return render_template('frontend/profile.html')
+    return fk.stream_template('frontend/profile.html', name = current_user.name)

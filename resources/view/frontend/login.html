@@ -2,24 +2,32 @@
 
 {% block content %}
 
-<div class="bg-body-secondary container-sm mt-4 p-4 rounded w-25">
+<div class="bg-body-secondary container-sm mt-4 p-4 rounded w-50">
     <h3 class="title">Login</h3>
     <div class="box">
-        <form form-groupmethod="POST" action="/login">
-
+        <form form-group method="POST" action="/login">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul class=flashes>
+                <li>{{ messages[-1] }}</li>
+            </ul>
+            {% endif %}
+            {% endwith %}
             <div class="form-group mb-3 row">
                 <label class='col' for="email">email:</label>
-                <input class="input is-large col" type="email" name="email" placeholder="Your Email" autofocus="">
+                <input class="input is-large col rounded-top-4" type="email" name="email" placeholder="Your Email"
+                    autofocus="">
             </div>
             <div class="form-group mb-3 row">
                 <label class='col' for="email">Your Password:</label>
-                <input class="col input is-large" type="password" name="password" placeholder="Your Password">
+                <input class="col input is-large rounded-bottom-4" type="password" name="password"
+                    placeholder="Your Password">
             </div>
             <div class="form-group mb-3 row">
 
                 <div class="form-check mb-3 col">
-                    <input class="form-check-input" type="checkbox" name="remember" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">
+                    <input class="form-check-input" type="checkbox" name="remember" id="rememberCheckBox">
+                    <label class="form-check-label" for="rememberCheckBox">
                         Remember me
                     </label>
                 </div>

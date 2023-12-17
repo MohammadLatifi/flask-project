@@ -2,10 +2,17 @@
 
 {% block content %}
 
-<div class="bg-body-secondary container-sm mt-4 p-4 rounded w-25">
+<div class="bg-body-secondary container-sm mt-4 p-4 rounded w-50">
     <h3 class="title">Sign Up</h3>
     <div class="mt-4">
         <form method="POST" class="" action="/signup">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul class=flashes>
+                <li>{{ messages[-1] }}</li>
+            </ul>
+            {% endif %}
+            {% endwith %}
             <div class="form-group mb-3 row">
                 <label class='col' for="email">email:</label>
                 <input class="col input is-large" type="email" name="email" placeholder="Email" autofocus="">

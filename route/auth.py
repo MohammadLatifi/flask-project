@@ -1,39 +1,62 @@
 import os
-from flask import Blueprint, render_template, redirect, url_for, request, flash
-from flask_login import login_user
+import flask as fk
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import login_user,login_required, logout_user
 from app.models.User import  User
+from extensions import db
 
 
-auth = Blueprint('auth', os.getenv("APP_NAME"),template_folder='./resources/view',static_folder='./public')
+auth_blueprint = fk.Blueprint('auth', os.getenv("APP_NAME"),template_folder='./resources/view',static_folder='./public')
 
-@auth.route('/login')
+@auth_blueprint.route('/login')
 def login():
-    return render_template('frontend/login.html')
+    fk.session.pop('_flashes', None)
+    return fk.stream_template('frontend/login.html')
 
-@auth.route('/signup')
+@auth_blueprint.route('/signup')
 def signup():
-    return render_template('frontend/signup.html')
+    fk.session.pop('_flashes', None)
+    return fk.stream_template('frontend/signup.html')
 
 
-@auth.route('/login', methods=['POST'])
+@auth_blueprint.route('/login', methods=['POST'])
 def login_post():
-    email = request.form.get('email')
-    password = request.form.get('password')
-    remember = True if request.form.get('remember') else False
+    email = fk.request.form.get('email').lower()
+    password = fk.request.form.get('password')
+    remember = True if fk.request.form.get('remember') else False
 
     user = User.query.filter_by(email=email).first()
     if not user or not check_password_hash(user.password, password):
-        flash('Please check your login details and try again.')
-        return redirect(url_for('auth.login')) 
+        fk.flash('Please check your login details and try again.')
+        return fk.stream_template('frontend/login.html')
 
-    return redirect(url_for('main.profile'))
+    login_user(user,remember=remember)
+    return fk.redirect(fk.url_for('web.index'))
 
-@auth.route('/signup', methods=['POST'])
+@auth_blueprint.route('/signup', methods=['POST'])
 def signup_post():
-    if user:
-        flash('Email address already exists')
-        return redirect(url_for('auth.signup'))
+    email = fk.request.form.get('email').lower()
+    name = fk.request.form.get('name')
+    password = fk.request.form.get('password')
 
-@auth.route('/logout')
+    user = User.query.filter_by(email=email).first() 
+
+    if user: # if a user is found, we want to redirect back to signup page so user can try again
+        fk.flash('this email address is already registered at our database.')
+        return fk.stream_template('frontend/signup.html')
+
+    # create a new user with the form data. Hash the password so the plaintext version isn't saved.
+    new_user = User(email=email, name=name, password=generate_password_hash(password))
+
+    # add the new user to the database
+    db.session.add(new_user)
+    db.session.commit()
+
+    return fk.redirect(fk.url_for('auth.login'))
+    
+
+@auth_blueprint.route('/logout')
+@login_required
 def logout():
-    return 'Logout'
+    logout_user()
+    return fk.redirect(fk.url_for('web.index'))

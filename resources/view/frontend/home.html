@@ -2,47 +2,10 @@
 
 {% block content %}
 
-<div class="bg-body-secondary container-sm mt-4 p-4 rounded w-25">
-    <h1 class="mb-4">Tech Talents</h1>
+<div class="bg-body-secondary container-sm mt-4 p-4 rounded">
 
-    <!-- Form to Add Talent -->
-    <form action="{{ url_for('web.add_talent') }}" method="post">
-        <div class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" class="form-control" id="name" name="name" required>
-        </div>
-        <div class="form-group">
-            <label for="background">Background:</label>
-            <input type="text" class="form-control" id="background" name="background">
-        </div>
-        <div class="form-group">
-            <label for="experience">Experience:</label>
-            <input type="text" class="form-control" id="experience" name="experience">
-        </div>
-        <div class="form-group">
-            <label for="education">Education:</label>
-            <input type="text" class="form-control" id="education" name="education">
-        </div>
-        <div class="form-group">
-            <label for="job_preference">Job Preference:</label>
-            <input type="text" class="form-control" id="job_preference" name="job_preference">
-        </div>
-        <div class="form-group">
-            <label for="availability">Availability:</label>
-            <input type="text" class="form-control" id="availability" name="availability">
-        </div>
-        <button type="submit" class="btn btn-primary my-2">Add Talent</button>
-    </form>
-
-    <hr>
-
-    <!-- Display Talents -->
-    <h2 class="my-4">Tech Talents List</h2>
-    <ul class="list-group">
-        {% for talent in talents %}
-            <li class="list-group-item">{{ talent.name }} - {{ talent.background }} - {{ talent.experience }} - {{ talent.education }} - {{ talent.job_preference }} - {{ talent.availability }}</li>
-        {% endfor %}
-    </ul>
+    <h2 class="my-4">Home Page</h2>
+    
 </div>
 
 

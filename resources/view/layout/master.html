@@ -5,16 +5,21 @@
   <script src="{{ url_for('static', filename='assets/bundle.js') }}"></script>
 </head>
 
-<body>
+<body class="d-flex flex-column" style="min-height: 100vh;">
   <header>
     <nav class="navbar navbar-expand-lg bg-light">
-      <div class="container-fluid">
+      <div class="container">
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             {% if current_user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('main.profile') }}" aria-current="page" href="#">Home</a>
+              <a class="nav-link" href="{{ url_for('web.profile') }}" aria-current="page" href="#">Dashboard</a>
+            </li>
+            {% endif %}
+            {% if not current_user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('web.index') }}" aria-current="page" href="#">Home</a>
             </li>
             {% endif %}
 
@@ -28,7 +33,7 @@
 
             <li class="nav-item">
               <a href="{{ url_for('auth.signup') }}" class="nav-link">
-                Sign Up
+                SignUp
               </a>
             </li>
             {% endif %}
@@ -41,19 +46,61 @@
             </li>
             {% endif %}
           </ul>
-          <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
         </div>
       </div>
     </nav>
   </header>
-
+  <div class="container my-4">
   {% block content %}{% endblock %}
-
-  <footer>
-    <!-- Put your footer content here -->
+  </div>
+  <footer class="bg-dark mt-auto text-center text-white w-100" >
+    <!-- Grid container -->
+    <div class="container p-4 pb-0">
+      <!-- Section: Form -->
+      <section class="">
+        <form action="">
+          <!--Grid row-->
+          <div class="row d-flex justify-content-center">
+            <!--Grid column-->
+            <div class="col-auto">
+              <p class="pt-2">
+                <strong>Sign up for our newsletter</strong>
+              </p>
+            </div>
+            <!--Grid column-->
+  
+            <!--Grid column-->
+            <div class="col-md-5 col-12">
+              <!-- Email input -->
+              <div class="form-outline form-white mb-4">
+                <input type="email" id="form5Example2" class="form-control" />
+                <label class="form-label" for="form5Example2">Email address</label>
+              </div>
+            </div>
+            <!--Grid column-->
+  
+            <!--Grid column-->
+            <div class="col-auto">
+              <!-- Submit button -->
+              <button type="submit" class="btn btn-outline-light mb-4">
+                Subscribe
+              </button>
+            </div>
+            <!--Grid column-->
+          </div>
+          <!--Grid row-->
+        </form>
+      </section>
+      <!-- Section: Form -->
+    </div>
+    <!-- Grid container -->
+  
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2023 Copyright:
+      <a class="text-white" href="https://TechTalent.com/">TechTalent.com</a>
+    </div>
+    <!-- Copyright -->
   </footer>
 </body>
 
